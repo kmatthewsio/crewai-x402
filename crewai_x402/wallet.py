@@ -36,7 +36,7 @@ class X402Wallet:
     def __init__(
         self,
         private_key: str | None = None,
-        network: str = "base-mainnet",
+        network: str = "eip155:8453",
         budget_usd: float = 10.0,
     ):
         """Initialize wallet.
@@ -215,7 +215,7 @@ class X402Wallet:
     def from_env(
         cls,
         key_env_var: str = "WALLET_PRIVATE_KEY",
-        network: str = "base-mainnet",
+        network: str = "eip155:8453",
         budget_usd: float = 10.0,
     ) -> "X402Wallet":
         """Create a wallet from an environment variable.

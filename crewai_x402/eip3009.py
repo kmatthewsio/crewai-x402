@@ -5,8 +5,40 @@ from typing import Any
 from eth_account import Account
 
 
-# Network configurations
+# Network configurations (CAIP-2 keys, with legacy aliases)
 NETWORKS: dict[str, dict[str, Any]] = {
+    # CAIP-2 format (canonical)
+    "eip155:8453": {
+        "chain_id": 8453,
+        "usdc_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "name": "USD Coin",
+        "version": "2",
+    },
+    "eip155:84532": {
+        "chain_id": 84532,
+        "usdc_address": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+        "name": "USD Coin",
+        "version": "2",
+    },
+    "eip155:1": {
+        "chain_id": 1,
+        "usdc_address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "name": "USD Coin",
+        "version": "2",
+    },
+    "eip155:11155111": {
+        "chain_id": 11155111,
+        "usdc_address": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+        "name": "USD Coin",
+        "version": "2",
+    },
+    "eip155:5042002": {
+        "chain_id": 5042002,
+        "usdc_address": "0x3600000000000000000000000000000000000000",
+        "name": "USD Coin",
+        "version": "2",
+    },
+    # Legacy aliases (backwards compat)
     "base-mainnet": {
         "chain_id": 8453,
         "usdc_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",

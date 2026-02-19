@@ -16,4 +16,4 @@ except ImportError:
     # crewai not installed - tool not available
     pass
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

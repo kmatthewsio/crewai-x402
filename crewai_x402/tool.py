@@ -67,10 +67,13 @@ class X402Tool(BaseTool):
     )
     timeout: float = Field(default=30.0, description="HTTP request timeout in seconds")
 
-    # Headers from x402 spec
-    _HEADER_PAYMENT_REQUIRED: str = "X-PAYMENT-REQUIRED"
-    _HEADER_PAYMENT: str = "X-PAYMENT"
-    _HEADER_PAYMENT_RESPONSE: str = "X-PAYMENT-RESPONSE"
+    # Headers from x402 V2 spec
+    _HEADER_PAYMENT_REQUIRED: str = "PAYMENT-REQUIRED"
+    _HEADER_PAYMENT: str = "PAYMENT-SIGNATURE"
+    _HEADER_PAYMENT_RESPONSE: str = "PAYMENT-RESPONSE"
+    # V1 legacy headers (for backwards compat reading)
+    _LEGACY_PAYMENT_REQUIRED: str = "X-PAYMENT-REQUIRED"
+    _LEGACY_PAYMENT_RESPONSE: str = "X-PAYMENT-RESPONSE"
 
     def _run(
         self,
@@ -144,9 +147,12 @@ class X402Tool(BaseTool):
     ) -> str:
         """Handle a 402 Payment Required response."""
         # Get payment requirements from header
-        payment_header = response.headers.get(self._HEADER_PAYMENT_REQUIRED)
+        payment_header = (
+            response.headers.get(self._HEADER_PAYMENT_REQUIRED)
+            or response.headers.get(self._LEGACY_PAYMENT_REQUIRED)
+        )
         if not payment_header:
-            return "Error: 402 response missing X-PAYMENT-REQUIRED header"
+            return "Error: 402 response missing PAYMENT-REQUIRED header"
 
         try:
             requirements = json.loads(base64.b64decode(payment_header))
@@ -203,7 +209,7 @@ class X402Tool(BaseTool):
 
         # Build x402 payment payload
         payload = {
-            "x402Version": 1,
+            "x402Version": 2,
             "scheme": "exact",
             "network": self.wallet.network,
             "payload": {
@@ -233,7 +239,10 @@ class X402Tool(BaseTool):
             )
 
         # Check for payment response header
-        payment_response = paid_response.headers.get(self._HEADER_PAYMENT_RESPONSE)
+        payment_response = (
+            paid_response.headers.get(self._HEADER_PAYMENT_RESPONSE)
+            or paid_response.headers.get(self._LEGACY_PAYMENT_RESPONSE)
+        )
         if payment_response:
             try:
                 pr_data = json.loads(base64.b64decode(payment_response))
