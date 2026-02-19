@@ -23,7 +23,7 @@ def create_research_crew():
     # Create wallet with $5 budget
     wallet = X402Wallet(
         private_key=os.environ["WALLET_PRIVATE_KEY"],
-        network="base-mainnet",
+        network="eip155:8453",
         budget_usd=5.00,
     )
 
