@@ -5,6 +5,8 @@
 
 **Enable CrewAI agents to pay for APIs with USDC using the x402 protocol.**
 
+Built by [AgentRails](https://www.agentrails.io) — AI agent payment infrastructure for the x402 protocol.
+
 crewai-x402 integrates the [x402 payment protocol](https://x402.org) with CrewAI, allowing your AI agent crews to autonomously access paid APIs without managing API keys or subscriptions.
 
 ## What is x402?
@@ -280,11 +282,14 @@ See the [examples/](examples/) directory:
 ## Related Packages
 
 - [langchain-x402](https://pypi.org/project/langchain-x402/) - x402 integration for LangChain
+- [AgentRails.SemanticKernel.X402](https://www.nuget.org/packages/AgentRails.SemanticKernel.X402) - x402 for Semantic Kernel (.NET)
+- [AgentRails.AgentFramework.X402](https://www.nuget.org/packages/AgentRails.AgentFramework.X402) - x402 for Microsoft Agent Framework (.NET)
 
 ## Resources
 
+- [AgentRails](https://www.agentrails.io) - AI agent payment infrastructure
+- [AgentRails Documentation](https://www.agentrails.io/docs)
 - [x402 Protocol Spec](https://x402.org)
-- [AgentRails Documentation](https://agentrails.io/docs)
 - [AgentRails Swagger (Sandbox)](https://sandbox.agentrails.io/swagger)
 - [EIP-3009 Specification](https://eips.ethereum.org/EIPS/eip-3009)
 - [CrewAI Documentation](https://docs.crewai.com)
