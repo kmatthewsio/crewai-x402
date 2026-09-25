@@ -1,10 +1,13 @@
 """CrewAI x402 integration - enable AI agents to pay for APIs with USDC."""
 
+from .nano import make_nano_pay_uri, micro_usd_to_raw
 from .wallet import PaymentRecord, X402Wallet
 
 __all__ = [
     "X402Wallet",
     "PaymentRecord",
+    "make_nano_pay_uri",
+    "micro_usd_to_raw",
 ]
 
 # Import tool only if crewai is available
