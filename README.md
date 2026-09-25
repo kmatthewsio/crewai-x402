@@ -174,6 +174,25 @@ result = tool._run(
 )
 ```
 
+### Feeless Nano (XNO) settlement for sub-minimum micropayments
+
+The sandbox's cheapest endpoint, `GET /api/x402/protected/data`, costs $0.001 USDC — below the point where an x402 facilitator transaction is economical to settle one request at a time. For these sub-minimum per-call amounts, the `nano` module turns an exact micro-dollar metered amount into a standard `nano:` payment URI that settles feelessly, with no merchant account and no chargeback window:
+
+```python
+from crewai_x402.nano import micro_usd_to_raw, make_nano_pay_uri
+
+# $0.001 metered charge at an XNO price of 150_000_000 micro-dollars ($150)
+raw = micro_usd_to_raw(1000, 150_000_000)   # exact integer raw, ceil-rounded
+uri = make_nano_pay_uri(
+    "nano_1yo6c1t64ahfjdw1dxizmbbnpdmbrckwhw9phbg5pdkeubrizga4qhnjmnx7",
+    raw,
+    {"label": "per-call", "message": "metered AI call"},
+)
+print(uri)  # nano:<account>?amount=...&label=per-call&message=metered%20AI%20call
+```
+
+The conversion is integer-only (no floats), so no value is lost on sub-cent inputs and a rounding edge can never under-send. It is dependency-free and never touches the x402 facilitator or the wallet.
+
 ### Payment History
 Track all payments made by the wallet:
 
