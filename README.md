@@ -132,6 +132,63 @@ result = crew.kickoff()
 
 Full API reference: [sandbox.agentrails.io/swagger](https://sandbox.agentrails.io/swagger)
 
+## Try it with Steward
+
+[Steward](https://pay.brianbooms.com/.well-known/x402) is a live x402 API on Base serving 90+ pay-per-call data endpoints in USDC — most at **$0.01**, no API keys, no signup. Machine-readable endpoint + price list:
+
+```
+curl https://pay.brianbooms.com/.well-known/x402
+```
+
+### See a 402 response
+
+```
+curl -i "https://pay.brianbooms.com/api/v1/data/weather?lat=30.27&lon=-97.74"
+# → 402 Payment Required (USDC on Base, $0.01)
+```
+
+### Point your crew at Steward
+
+```python
+wallet = X402Wallet(
+    private_key=os.environ["WALLET_PRIVATE_KEY"],
+    network="eip155:8453",  # Base mainnet
+    budget_usd=1.00,
+)
+payment_tool = X402Tool(wallet=wallet)
+
+researcher = Agent(
+    role="Data Researcher",
+    goal="Gather accurate, current data from paid x402 APIs",
+    backstory="You buy data from Steward (pay.brianbooms.com) at $0.01/call.",
+    tools=[payment_tool],
+)
+
+task = Task(
+    description=(
+        "Get the current weather in Austin, TX from "
+        "https://pay.brianbooms.com/api/v1/data/weather?lat=30.27&lon=-97.74 "
+        "(pay up to $0.01)."
+    ),
+    agent=researcher,
+)
+
+crew = Crew(agents=[researcher], tasks=[task])
+result = crew.kickoff()
+```
+
+### Steward endpoints used in examples
+
+| Endpoint | Cost | Description |
+| --- | --- | --- |
+| `GET /api/v1/data/weather?lat=&lon=` | $0.01 USDC | Current weather + 7-day forecast |
+| `GET /api/v1/data/iss-pass?lat=&lon=` | $0.01 USDC | Upcoming visible ISS flyover times |
+| `GET /api/v1/data/joke` | $0.01 USDC | One original clean joke |
+| `GET /api/v1/data/fortune` | $0.01 USDC | One original fortune |
+| `GET /api/v1/data/crypto-price` | $0.01 USDC | Spot prices, up to 50 coins |
+
+Full example: [`examples/steward_data_crew.py`](examples/steward_data_crew.py)
+
 ## Features
 
 ### Automatic Payment Handling
@@ -268,6 +325,7 @@ V2 uses [CAIP-2](https://github.com/ChainAgnostic/CAIPs/blob/main/CAIPs/caip-2.m
 
 See the [examples/](examples/) directory:
 - `research_crew.py` - Research crew with payment capability
+- `steward_data_crew.py` - Two-agent crew buying Steward's $0.01 x402 data endpoints on Base (weather, ISS pass, joke)
 
 ## How It Differs From API Keys
 
